@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import uploadImage from "../api/uploader";
 import { addNewProduct } from "../api/firebase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,39 +8,20 @@ import { useNavigate } from "react-router-dom";
 export default function AddProductPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const mutation = useMutation<void, Error, Product>(
-    (newProduct: Product) => {
-      // 제품 사진을 Cloudinary에 업로드하고 URL 획득
-      return uploadImage(file)
-        .then((url) => {
-          return addNewProduct(newProduct, url);
-        })
-        .then(() => {
-          queryClient.invalidateQueries("products");
-        });
-    },
-    {
-      onMutate: () => {
-        setIsUploading(true);
-        setSuccess(""); // 초기화
-      },
-      onError: () => {
-        setIsUploading(false);
-        setSuccess("제품 등록에 실패했습니다.");
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      },
-      onSuccess: () => {
-        setIsUploading(false);
-        setSuccess("성공적으로 제품이 등록되었습니다.");
-        setTimeout(() => {
-          setSuccess("");
-          navigate("/");
-        }, 2000);
-      },
+  const [file, setFile] = useState<File | null>(null);
+  const mutation = useMutation<void, Error, Product>((newProduct: Product) => {
+    if (!file) {
+      throw new Error("파일을 선택해주세요.");
     }
-  );
+
+    return uploadImage(file)
+      .then((url) => {
+        return addNewProduct(newProduct, url);
+      })
+      .then(() => {
+        queryClient.invalidateQueries("products");
+      });
+  });
 
   const [product, setProduct] = useState<Product>({
     id: "",
@@ -50,9 +31,10 @@ export default function AddProductPage() {
     options: [],
     description: "",
   });
-  const [file, setFile] = useState<File | null>(null);
+
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
@@ -73,12 +55,23 @@ export default function AddProductPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!file) {
-      return;
-    }
     mutation.mutate(product);
   };
 
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      setSuccess("성공적으로 제품이 등록되었습니다.");
+      setTimeout(() => {
+        setSuccess("");
+        navigate("/");
+      }, 2000);
+    } else if (mutation.isError) {
+      setError("제품 등록에 실패했습니다.");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
+  }, [mutation.isSuccess, mutation.isError]);
   return (
     <section className="bg-white p-4 flex flex-col justify-center items-center">
       {success && (
