@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  box-sizing: border-box;
+}
+:root {
+  font-family: Inter, system-ui, Helvetica, Arial, sans-serif;
+  /* background: #0f100b;
+  color: #fff; */
+  line-height: 1.5;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  height: 100vh;
+}
+main {
+  background: #0f100b;
+  color: #fff;
+}
+
+/* a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+} */
+a:hover {
+  /* color: #535bf2; */
+  @apply text-orange-600;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#root {
+  /* 최대너비 지정 */
+  @apply w-full max-w-screen-2xl;
+}
+
+input {
+  outline: none;
+  color: #fff;
+  /* color: #000; */
+  /* @apply outline-none block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-indigo-500 focus:outline-none focus:ring-0 focus:border-indigo-600 peer; */
+  /* @apply p-4 outline-none border border-gray-300 my-1; */
+}
+.container {
+  /* max-width: 1000px;
+  width: 90%; */
+  margin: 0 auto;
+}
+
+h2 {
+  margin: 20px auto;
+  font-size: 1.4rem;
+  letter-spacing: -1px;
+  font-weight: bold;
+  padding: 1rem;
+}
