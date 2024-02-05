@@ -1,4 +1,4 @@
-# React + TypeScript + Vite를 사용한 쇼핑몰 웹사이트
+# React + TypeScript + firebase를 사용한 쇼핑몰 웹사이트
 * 추가 리팩토링 후 배포 예정
 - Firebase를 이용한 OAuth 로그인, 실시간 데이터베이스 사용  
 - Cloudinary 서비스를 이용한 제품의 이미지 업로드 기능
@@ -17,3 +17,6 @@
 
 ### 🐻 admin 유저의 상품 등록 기능
 ![image](https://github.com/developer-jyyun/shoppingmall/assets/131247158/6537a798-7a3a-498c-a512-f3bbc4b9aab3)
+
+
+### 번들러 : vite 
